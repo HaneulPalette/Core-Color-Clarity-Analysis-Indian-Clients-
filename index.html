@@ -115,6 +115,57 @@ let fullReport = "";
 
 function showPreview(){
 
+  // PREVIEW CONTENT (MORE REALISTIC)
+  const previewText = `
+PREVIEW REPORT
+
+Season: Soft Autumn
+Undertone: Warm
+
+Sample Suitable Colors:
+• Olive Green
+• Warm Beige
+• Soft Brown
+
+(Full report includes complete personalized palette, styling guidance, and detailed analysis)
+`;
+
+  document.getElementById("previewBox").innerText = previewText;
+  document.getElementById("previewBox").style.display = "block";
+
+  document.getElementById("paymentBox").style.display = "block";
+
+  // FULL REPORT (LOCKED)
+  fullReport = `
+HANEUL PALETTE
+
+CORE COLOR CLARITY REPORT
+
+Season: Soft Autumn
+Undertone: Warm
+
+Core Colors:
+- Olive Green
+- Beige
+- Warm Brown
+- Rust
+- Soft Gold
+- Camel
+
+Avoid:
+- Neon shades
+- Cool blue tones
+
+Style Direction:
+Warm, muted tones enhance your natural harmony and create a balanced appearance.
+
+Wardrobe Guidance:
+Focus on earthy tones and soft contrasts for a refined everyday look.
+
+Thank you for choosing Haneul Palette.
+`;
+}
+
   // PREVIEW CONTENT
   const previewText = `
 PREVIEW REPORT
