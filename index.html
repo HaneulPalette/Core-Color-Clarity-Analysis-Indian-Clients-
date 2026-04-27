@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <title>Core Color Clarity</title>
 
-<!-- jsPDF -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <style>
@@ -26,7 +25,10 @@ body {
 .logo {
   width: 100px;
   border-radius: 50%;
-  margin-bottom: 10px;
+}
+
+input[type="file"] {
+  margin-top: 15px;
 }
 
 button {
@@ -40,26 +42,22 @@ button {
 }
 
 .result {
-  margin-top: 20px;
   display: none;
+  margin-top: 20px;
   background: #f5f5f5;
   padding: 15px;
   text-align: left;
   white-space: pre-line;
-  border-radius: 8px;
 }
 
-#paymentBox {
+#paymentSection {
   display: none;
   margin-top: 20px;
 }
 
-input {
-  padding: 10px;
-  width: 70%;
-  margin-top: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
+#finalStep {
+  display: none;
+  margin-top: 20px;
 }
 </style>
 </head>
@@ -68,44 +66,43 @@ input {
 
 <div class="container">
 
-<!-- LOGO -->
-<img src="logo.png" class="logo" alt="Haneul Palette Logo">
+<img src="logo.png" class="logo">
 
 <h1>🌿 Core Color Clarity</h1>
 <p>A refined understanding of your natural color direction.</p>
 
-<!-- GOOGLE FORM BUTTON -->
-<a href="https://forms.gle/X5q31CnBjPVBvDjs9" target="_blank">
-  <button>Start Analysis (Fill Form)</button>
-</a>
+<!-- STEP 1: IMAGE UPLOAD -->
+<h3>Upload Your Photo</h3>
+<input type="file" id="imageInput" accept="image/*">
 
 <br>
+<button onclick="generatePreview()">Get Preview</button>
 
-<!-- PREVIEW BUTTON -->
-<button onclick="showPreview()">View Preview Report</button>
-
-<!-- PREVIEW BOX -->
+<!-- STEP 2: PREVIEW -->
 <div class="result" id="previewBox"></div>
 
-<!-- PAYMENT SECTION -->
-<div id="paymentBox">
-  <h3>💳 Unlock Full Report – ₹499</h3>
-  <p>Scan UPI QR and complete payment</p>
+<!-- STEP 3: PAYMENT -->
+<div id="paymentSection">
+  <h3>Unlock Full Report – ₹499</h3>
+  <p>Scan the QR code and complete payment</p>
 
-  <!-- UPI QR IMAGE -->
-  <img src="upi.png" width="200" alt="UPI QR Code">
+  <img src="upi.png" width="200">
 
-  <br>
+  <p style="margin-top:10px;">
+  After payment, submit proof using the form below
+  </p>
 
-  <input type="text" id="txn" placeholder="Enter UPI Transaction ID / PNR">
-  <br>
-  <button onclick="verifyPayment()">Submit Payment</button>
+  <a href="https://forms.gle/X5q31CnBjPVBvDjs9" target="_blank">
+    <button>Submit Payment Proof</button>
+  </a>
 </div>
 
-<!-- DOWNLOAD BUTTON -->
-<button id="downloadBtn" style="display:none;" onclick="downloadPDF()">
-Download Full Report (PDF)
-</button>
+<!-- STEP 4: FINAL -->
+<div id="finalStep">
+  <p>Your full report will be shared after verification.</p>
+
+  <button onclick="downloadPDF()">Download Sample Report</button>
+</div>
 
 </div>
 
@@ -113,108 +110,45 @@ Download Full Report (PDF)
 
 let fullReport = "";
 
-function showPreview(){
+function generatePreview(){
 
-  // PREVIEW CONTENT (MORE REALISTIC)
-  const previewText = `
-PREVIEW REPORT
+  const file = document.getElementById("imageInput").files[0];
 
-Season: Soft Autumn
-Undertone: Warm
-
-Sample Suitable Colors:
-• Olive Green
-• Warm Beige
-• Soft Brown
-
-(Full report includes complete personalized palette, styling guidance, and detailed analysis)
-`;
-
-  document.getElementById("previewBox").innerText = previewText;
-  document.getElementById("previewBox").style.display = "block";
-
-  document.getElementById("paymentBox").style.display = "block";
-
-  // FULL REPORT (LOCKED)
-  fullReport = `
-HANEUL PALETTE
-
-CORE COLOR CLARITY REPORT
-
-Season: Soft Autumn
-Undertone: Warm
-
-Core Colors:
-- Olive Green
-- Beige
-- Warm Brown
-- Rust
-- Soft Gold
-- Camel
-
-Avoid:
-- Neon shades
-- Cool blue tones
-
-Style Direction:
-Warm, muted tones enhance your natural harmony and create a balanced appearance.
-
-Wardrobe Guidance:
-Focus on earthy tones and soft contrasts for a refined everyday look.
-
-Thank you for choosing Haneul Palette.
-`;
-}
-
-  // PREVIEW CONTENT
-  const previewText = `
-PREVIEW REPORT
-
-Your analysis is ready.
-
-Season: Identified
-Undertone: Identified
-
-(Full report includes detailed personalized colors and styling guidance)
-`;
-
-  document.getElementById("previewBox").innerText = previewText;
-  document.getElementById("previewBox").style.display = "block";
-
-  document.getElementById("paymentBox").style.display = "block";
-
-  // FULL REPORT (LOCKED UNTIL PAYMENT)
-  fullReport = `
-HANEUL PALETTE
-
-CORE COLOR CLARITY REPORT
-
-This report provides a refined understanding of your personal color direction.
-
-✔ Undertone Analysis
-✔ Seasonal Classification
-✔ Personalized Color Palette
-✔ Clothing Color Guidance
-✔ Style Direction
-
-Your natural tones align best with harmonious and balanced color combinations that enhance your overall appearance.
-
-Thank you for choosing Haneul Palette.
-`;
-}
-
-function verifyPayment(){
-
-  const txn = document.getElementById("txn").value;
-
-  if(txn.length < 5){
-    alert("Please enter a valid Transaction ID");
+  if(!file){
+    alert("Please upload your image first");
     return;
   }
 
-  alert("Payment recorded. Full report unlocked.");
+  // PREVIEW (2 FEATURES)
+  const preview = `
+PREVIEW RESULT
 
-  document.getElementById("downloadBtn").style.display = "inline-block";
+Season: Soft Autumn
+Undertone: Warm
+
+(Complete analysis available in full report)
+`;
+
+  document.getElementById("previewBox").innerText = preview;
+  document.getElementById("previewBox").style.display = "block";
+
+  document.getElementById("paymentSection").style.display = "block";
+
+  // FULL REPORT (YOU WILL ACTUALLY SEND MANUALLY)
+  fullReport = `
+HANEUL PALETTE
+
+CORE COLOR CLARITY REPORT
+
+Season: Soft Autumn
+Undertone: Warm
+
+Recommended Colors:
+Olive, Beige, Rust, Camel
+
+Style Guidance:
+Warm muted tones enhance your natural features.
+`;
 }
 
 function downloadPDF(){
@@ -226,21 +160,13 @@ function downloadPDF(){
   img.src = "logo.png";
 
   img.onload = function(){
-
-    // LOGO
     doc.addImage(img, "PNG", 85, 10, 40, 40);
+    doc.text("Sample Report", 70, 60);
 
-    // TITLE
-    doc.setFontSize(14);
-    doc.text("Core Color Clarity Report", 50, 60);
-
-    // CONTENT
-    doc.setFontSize(11);
     const lines = doc.splitTextToSize(fullReport, 180);
-    doc.text(lines, 10, 75);
+    doc.text(lines, 10, 80);
 
-    // DOWNLOAD PDF
-    doc.save("Core_Color_Clarity_Report.pdf");
+    doc.save("Sample_Report.pdf");
   }
 }
 
