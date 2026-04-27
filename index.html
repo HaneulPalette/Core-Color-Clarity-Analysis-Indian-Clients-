@@ -27,10 +27,6 @@ body {
   border-radius: 50%;
 }
 
-input[type="file"] {
-  margin-top: 15px;
-}
-
 button {
   padding: 12px 20px;
   background: black;
@@ -48,6 +44,7 @@ button {
   padding: 15px;
   text-align: left;
   white-space: pre-line;
+  border-radius: 8px;
 }
 
 #paymentSection {
@@ -55,7 +52,7 @@ button {
   margin-top: 20px;
 }
 
-#finalStep {
+#unlockSection {
   display: none;
   margin-top: 20px;
 }
@@ -71,37 +68,39 @@ button {
 <h1>🌿 Core Color Clarity</h1>
 <p>A refined understanding of your natural color direction.</p>
 
-<!-- STEP 1: IMAGE UPLOAD -->
+<!-- STEP 1 -->
 <h3>Upload Your Photo</h3>
 <input type="file" id="imageInput" accept="image/*">
 
 <br>
 <button onclick="generatePreview()">Get Preview</button>
 
-<!-- STEP 2: PREVIEW -->
+<!-- STEP 2 -->
 <div class="result" id="previewBox"></div>
 
-<!-- STEP 3: PAYMENT -->
+<!-- STEP 3 -->
 <div id="paymentSection">
   <h3>Unlock Full Report – ₹499</h3>
-  <p>Scan the QR code and complete payment</p>
+  <p>Scan QR code and complete payment</p>
 
-  <img src="paypal-qr.png" width="200">
+  <!-- QR IMAGE -->
+  <img src="upi.png" width="200">
 
-  <p style="margin-top:10px;">
-  After payment, submit proof using the form below
-  </p>
+  <p>After payment, submit proof using the form</p>
 
-  <a href="https://forms.gle/X5q31CnBjPVBvDjs9" target="_blank">
+  <a href="https://forms.gle/9V3iHhhGr1PL6VT1A" target="_blank">
     <button>Submit Payment Proof</button>
   </a>
+
+  <br>
+
+  <button onclick="showUnlock()">I Have Submitted the Form</button>
 </div>
 
-<!-- STEP 4: FINAL -->
-<div id="finalStep">
-  <p>Your full report will be shared after verification.</p>
-
-  <button onclick="downloadPDF()">Download Sample Report</button>
+<!-- STEP 4 -->
+<div id="unlockSection">
+  <h3>Download Your Report</h3>
+  <button onclick="downloadPDF()">Download Full Report (PDF)</button>
 </div>
 
 </div>
@@ -119,14 +118,17 @@ function generatePreview(){
     return;
   }
 
-  // PREVIEW (2 FEATURES)
+  // 🔥 PREMIUM PREVIEW (3 FEATURES)
   const preview = `
 PREVIEW RESULT
 
-Season: Soft Autumn
-Undertone: Warm
+Season Classification: Soft Autumn
+Undertone Profile: Warm-Neutral
 
-(Complete analysis available in full report)
+Dominant Color Harmony:
+Muted earthy tones enhance your natural features and create a balanced, refined appearance.
+
+(Full report includes complete palette, contrast level, styling and wardrobe guidance)
 `;
 
   document.getElementById("previewBox").innerText = preview;
@@ -134,21 +136,34 @@ Undertone: Warm
 
   document.getElementById("paymentSection").style.display = "block";
 
-  // FULL REPORT (YOU WILL ACTUALLY SEND MANUALLY)
+  // FULL REPORT DATA
   fullReport = `
 HANEUL PALETTE
 
 CORE COLOR CLARITY REPORT
 
 Season: Soft Autumn
-Undertone: Warm
+Undertone: Warm-Neutral
 
-Recommended Colors:
-Olive, Beige, Rust, Camel
+Best Colors:
+Olive, Beige, Rust, Camel, Soft Gold
 
-Style Guidance:
-Warm muted tones enhance your natural features.
+Avoid:
+Cool tones, Neon shades
+
+Style Direction:
+Soft warm tones enhance your natural harmony and elegance.
+
+Wardrobe Tips:
+Focus on earthy palettes and low contrast styling for best results.
+
+Thank you for choosing Haneul Palette.
 `;
+}
+
+function showUnlock(){
+  alert("Once your payment is verified, your report is ready.");
+  document.getElementById("unlockSection").style.display = "block";
 }
 
 function downloadPDF(){
@@ -160,13 +175,17 @@ function downloadPDF(){
   img.src = "logo.png";
 
   img.onload = function(){
+
     doc.addImage(img, "PNG", 85, 10, 40, 40);
-    doc.text("Sample Report", 70, 60);
 
+    doc.setFontSize(14);
+    doc.text("Core Color Clarity Report", 50, 60);
+
+    doc.setFontSize(11);
     const lines = doc.splitTextToSize(fullReport, 180);
-    doc.text(lines, 10, 80);
+    doc.text(lines, 10, 75);
 
-    doc.save("Sample_Report.pdf");
+    doc.save("Core_Color_Clarity_Report.pdf");
   }
 }
 
